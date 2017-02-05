@@ -157,9 +157,9 @@ assert(fac(5) == 120)
 assert(fac(10) == 3628800)
 assert(fac(20) == 2432902008176640000)
 
-######################
-# Exercise 5 (BONUS) #
-######################
+##############
+# Exercise 5 #
+##############
 
 """
 This final exercise is a bit tricky. It involves modifying a substantial
