@@ -157,3 +157,127 @@ assert(fac(5) == 120)
 assert(fac(10) == 3628800)
 assert(fac(20) == 2432902008176640000)
 
+######################
+# Exercise 5 (BONUS) #
+######################
+
+"""
+This final exercise is a bit tricky. It involves modifying a substantial
+function. The function uses some Python features you have not seen before,
+but you will not need to touch those features yourself. This exercise is
+intended to show you how more complicated functions look and behave. The
+Coursera course we follow doesn't do a particularly good job of that.
+
+Below is an alternate way to test the above exercises. Your task is
+to modify the testing code to include test numbers. That is, if the third test
+fails, then the testing output should include that test 3 failed.
+
+I have provided a run_tests() function that you can call from the Python
+prompt. It will run the same tests that you used above, but it will use
+the new testing method. Edit the tests in this function, and run it, to
+become familiar with the expected output of the new testing method.
+
+As far as completing the task goes, I suggest inserting the test number
+into the "test failed:" string. That is, change it to "test # failed:" where
+'#' is the test number.
+
+To test your reporting, change the tests in run_tests() to be incorrect. Always
+remember: tests are code too, and can have just as many errors as normal code.
+
+Hint: don't overthink this! test() only needs a couple changes. Most of it
+will stay exactly as it is now.
+
+------------
+Python features you have not encountered before:
+    functions as arguments
+    lambda
+    fun.__name__
+    multi-line strings
+
+We can use functions as values, as long as we don't put the () at the end of them.
+Using parenthesis "calls" the function, aka makes it do its thing. If we don't
+call it, then it's just a (strange) Python value. Here, we pass in the function
+that we want to test. We then call it from within test() by using fun(). As we
+can tell from the function definition, `fun` is a variable holding the function
+we pass in, therefore `fun` is the function we want to test, so we can call it.
+
+Lambdas are "anonymous functions". You don't need to know about them, but they
+are pretty cool. I suggest that you look them up, but they are not essential
+to general Python usage. (I use them because they are really common in
+Haskell, my favorite programming language). I use a lambda to create a
+quick function that writes out the function call, but as a string.
+
+fun.__name__ is an "attribute" that all functions have. We'll talk more about that
+when we cover Object Oriented Programming (OOP) in Python. Essentially, it is
+the name of the function, aka "function_name" from
+
+def function_name():
+
+If we have long strings, we can split them up over multiple lines by inserting \
+at the end of each part, then continuing the string on a newline. As an example,
+Python thinks the following two strings are equivalent:
+
+"Sally sells sea shells."
+
+"Sally sells" \
++ " sea" \
++ " shells."
+
+The '+' is important, and is normal string joining.
+"""
+
+def test(fun, cases, name):
+    """
+    fun: the function to be tested
+    cases: list of (input, expected output)
+    name: the name of the set of tests
+    example: test(collatz, [(15, 46), (31, 94)], "Collatz")
+    """
+    tst = lambda x: fun.__name__ + '(' + str(x) + ')'
+
+    # Keep track of test number
+    test_number = 0
+    
+    # test all provided cases
+    for inp, outp in cases:
+        # update our test number
+        test_number += 1
+        # get the function's output
+        result = fun(inp)
+        fails = 0
+        # compare actual output to expected (test) output
+        if result == outp:
+            # if we're good, just move on
+            pass
+        else:
+            # report test failure
+            print name + " test " + str(test_number) + " failed: " \
+                  + tst(inp) + " produced " + str(result) \
+                  + ", but we expected " + str(outp)
+            # keep track of how many tests have failed so far
+            fails += 1
+
+    # end of tests reporting
+    if fails == 0:
+        print "All " + name + " tests passed! Good work!"
+    else:
+        print name + " encountered " + str(fails) + " test case failures."
+
+# These are the same tests as above, just in the new form.
+# run this in the Python prompt
+def run_tests():
+    # You'll want to edit the stuff in the parenthesis. Each set of parenthesis
+    # is an (input, expected output) - aka a test case. If that's unclear,
+    # compare them to the assert() tests above to figure out which parts change
+    test(collatz,
+         [(1,4), (4,2), (15,46), (31,94), (20,10)],
+         "Collatz")
+    test(collatz_num,
+         [(1,0), (4,2), (15,17), (63,107), (16,4)],
+         "Collatz Number")
+    test(factorial,
+         [(0,1), (1,1), (5,120), (10,3628800), (20,2432902008176640000)],
+         "Factorial (Loop)")
+    test(fac,
+         [(0,1), (1,1), (5,120), (10,3628800), (20,2432902008176640000)],
+         "Factorial (Recursion)")
